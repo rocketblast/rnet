@@ -115,7 +115,7 @@ namespace Rnet_Cli
                     Console.WriteLine("Instance information: ");
                     Console.WriteLine("Host: " + instance.Host);
                     Console.WriteLine("Port: " + instance.Port);
-                    Console.WriteLine("Password: " + instance.Password);
+                    Console.WriteLine("Password: *********");
                     WriteLine(Console.WindowWidth);
 
                     Console.WriteLine("");
