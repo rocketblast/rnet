@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Skynet</title>
+    <style type="text/css">
+        .container {
+            background-color: #99CCFF;
+            border: thick solid #808080;
+            padding: 20px;
+            position: absolute;
+            left: 1em;
+            right: 1em;
+            top: 1em;
+            bottom: 1em;
+        }
+
+        .messages {
+            height: 100%;
+            overflow: auto;
+        }
+
+        #tt {
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--<input type="text" id="message" />
+        <input type="hidden" id="displayname" />-->
+        <!--<ul id="discussion"></ul>-->
+        <input type="button" id="sendmessage" value="Send" />
+        <div class="messages">
+            <ul id="tt"></ul>
+        </div>
+    </div>
+
+    <script src="/bundles/jquery"></script>
+    <script src="/bundles/signalr"></script>
+    <script src="/signalr/hubs"></script>
+    
+    <script type="text/javascript">
+        $(function () {
+            //var chat = $.connection.ChatHub;
+            //chat.client.broadcastMessage = function (name, mesage) {
+            //    var encodeName = $('<div />').text(name).html();
+            //    var encodeMessage = $('<div />').text(mesage).html();
+
+            //    $('#discussion').append('<li><strong>' + encodeName
+            //        + '</strong>:&nbsp;&nbsp;' + encodeMessage + '</li>');
+            //};
+
+            var addNewEvent = function (message) {
+                if($('#tt li').length > 500) {
+                    $('#tt li:last').remove();
+                }
+
+                $('#tt').prepend('<li>' + message + '</li>');
+            };
+
+            var skynet = $.connection.Skynet;
+            skynet.client.broadcastMessage = function (servername, message) {
+                var d = new Date();
+                var hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours();
+                var mins = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes();
+                var sec = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds();
+                var now = hours + ":" + mins + ":" + sec;
+                var m = now + " - " + servername + ": " + message;
+                //console.log(m);
+
+                var encodeMsg = $('<div />').text(m).html();
+                addNewEvent(encodeMsg);
+            }
+
+            $.connection.hub.start().done(function () {
+                console.log("Connected!")
+
+                skynet.server.joinGroup("webclients");
+                //http://www.asp.net/signalr/overview/guide-to-the-api/hubs-api-guide-server#callfromoutsidehub
+                $('#sendmessage').click(function () {
+                    var createInstance = {
+                        Host: "188.126.64.7",
+                        Port: 47200,
+                        Password: "H4xxPass"
+                    };
+
+                    skynet.server.spawnInstance("nodes", createInstance);
+                });
+
+            });
+        });
+    </script>
+</body>
+</html>

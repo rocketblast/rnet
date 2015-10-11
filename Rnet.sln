@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnet-Battlefield", "Rnet\Rnet-Battlefield.csproj", "{610F4E6C-71B2-4CD7-949B-E20856E6F384}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D5C5FDAF-F6A2-43CC-B19B-69B7DDF297B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "web", "web", "{5EBE628C-0B56-476B-B143-9C74BA33F9C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "thor", "thor\thor.csproj", "{F12CCB6E-6835-4565-8FB8-4C4674BBFFE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnet-Base", "Rnet-Base\Rnet-Base.csproj", "{8E1D212B-29DB-49D8-8330-B5C1DF32A858}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnet-simpleclient", "Rnet-SimpleClient\Rnet-simpleclient.csproj", "{05A7E615-1F6F-4C22-A0B9-BDC4F9AC6FE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnet-Cli", "Rnet-Cli\Rnet-Cli.csproj", "{D3781E72-1477-4DE3-BE95-391601C4594C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{610F4E6C-71B2-4CD7-949B-E20856E6F384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{610F4E6C-71B2-4CD7-949B-E20856E6F384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{610F4E6C-71B2-4CD7-949B-E20856E6F384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{610F4E6C-71B2-4CD7-949B-E20856E6F384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F12CCB6E-6835-4565-8FB8-4C4674BBFFE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F12CCB6E-6835-4565-8FB8-4C4674BBFFE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F12CCB6E-6835-4565-8FB8-4C4674BBFFE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F12CCB6E-6835-4565-8FB8-4C4674BBFFE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E1D212B-29DB-49D8-8330-B5C1DF32A858}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E1D212B-29DB-49D8-8330-B5C1DF32A858}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E1D212B-29DB-49D8-8330-B5C1DF32A858}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E1D212B-29DB-49D8-8330-B5C1DF32A858}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05A7E615-1F6F-4C22-A0B9-BDC4F9AC6FE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05A7E615-1F6F-4C22-A0B9-BDC4F9AC6FE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05A7E615-1F6F-4C22-A0B9-BDC4F9AC6FE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05A7E615-1F6F-4C22-A0B9-BDC4F9AC6FE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3781E72-1477-4DE3-BE95-391601C4594C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3781E72-1477-4DE3-BE95-391601C4594C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3781E72-1477-4DE3-BE95-391601C4594C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3781E72-1477-4DE3-BE95-391601C4594C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{610F4E6C-71B2-4CD7-949B-E20856E6F384} = {D5C5FDAF-F6A2-43CC-B19B-69B7DDF297B1}
+		{F12CCB6E-6835-4565-8FB8-4C4674BBFFE2} = {5EBE628C-0B56-476B-B143-9C74BA33F9C5}
+		{8E1D212B-29DB-49D8-8330-B5C1DF32A858} = {D5C5FDAF-F6A2-43CC-B19B-69B7DDF297B1}
+		{05A7E615-1F6F-4C22-A0B9-BDC4F9AC6FE4} = {D5C5FDAF-F6A2-43CC-B19B-69B7DDF297B1}
+		{D3781E72-1477-4DE3-BE95-391601C4594C} = {D5C5FDAF-F6A2-43CC-B19B-69B7DDF297B1}
+	EndGlobalSection
+EndGlobal
