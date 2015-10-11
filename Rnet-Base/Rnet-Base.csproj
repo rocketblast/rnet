@@ -43,6 +43,7 @@
     <Compile Include="Handlers\Commands\CreateInstance.cs" />
     <Compile Include="Handlers\Commands\IClientConnected.cs" />
     <Compile Include="Handlers\Commands\ICreateInstance.cs" />
+    <Compile Include="Handlers\Commands\SendIngameMessage.cs" />
     <Compile Include="Handlers\RealTime\Event.cs" />
     <Compile Include="Handlers\RealTime\IEvent.cs" />
     <Compile Include="Handlers\RealTime\IMessage.cs" />

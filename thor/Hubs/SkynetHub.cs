@@ -23,12 +23,17 @@ namespace thor.Hubs
             //Clients.Others.broadcastMessage(msg.ServerName, message);
         }
 
+        public void SendIngameMessage(SendIngameMessage msg)
+        {
+            Clients.Group("nodes").IngameMessage(msg);
+        }
+
         #region Group management
         public void JoinGroup(string groupName)
         {
             // TODO: Add authentication for this request
             Groups.Add(Context.ConnectionId, groupName);
-            Clients.Group(groupName).addMessage(Context.User.Identity.Name + " joined.");
+            Clients.Group(groupName).GroupMessage(Context.User.Identity.Name + " joined.");
         }
 
         public Task LeaveGroup(string groupName)

@@ -175,7 +175,6 @@ namespace Rnet_Battlefield.RnetConnection.Frostbite
                 Message = msg
             });
         }
-
         #endregion
 
         #region Private methods and functions

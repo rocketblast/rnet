@@ -30,12 +30,13 @@
     <!--<script src="/Scripts/angular.js" charset="utf-8"></script>-->
 </head>
 <body>
-    <!--<div class="container">
-        <input type="button" id="sendmessage" value="Send" />
+    <div class="container">
+        <input type="button" id="sendmessage" value="Send Instance" />
+        <input type="button" id="sendHello" value="Send Hello" />
         <div class="messages">
             <ul id="tt"></ul>
         </div>
-    </div>-->
+    </div>
 
     <p>testsetsetste {{ 'test' + '!' }}</p>
 
@@ -87,7 +88,21 @@
 
                     skynet.server.spawnInstance("nodes", createInstance);
                 });
+                
+                $('#sendHello').click(function () {
+                    var SendIngameMessage = {
+                        ServerName: "188.126.64.7:47200",
+                        Target: {
+                            Name: "all"
+                        },
+                        Message: 'Test'
+                    };
 
+                    console.log("Sending hello");
+                    console.log(SendIngameMessage);
+
+                    skynet.server.sendIngameMessage(SendIngameMessage);
+                });
             });
         });
     </script>

@@ -110,6 +110,7 @@ namespace Rnet_Cli
                     }
                 }).Wait();
 
+                #region Handlers
                 var CreateInstanceHandler = skynet.On<CreateInstance>("CreateInstance", instance =>
                 {
                     Console.WriteLine("Instance information: ");
@@ -141,6 +142,7 @@ namespace Rnet_Cli
                         oThread.Start();
                     }
                 });
+                #endregion
             }
 
             Console.ReadLine();

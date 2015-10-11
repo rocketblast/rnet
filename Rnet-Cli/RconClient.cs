@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR.Client;
+using Newtonsoft.Json;
 
 using Rnet_Battlefield;
 using Rnet_Battlefield.Helpers;
 using Rnet_Battlefield.RnetConnection.Frostbite;
-using Newtonsoft.Json;
-using Microsoft.AspNet.SignalR.Client;
 using Rnet_Base.Handlers.RealTime;
+using Rnet_Base.Handlers.Commands;
 
 
 namespace Rnet_Cli
@@ -20,6 +21,7 @@ namespace Rnet_Cli
         public String Host { get; set; }
         public Int32 Port { get; set; }
         public String Password { get; set; }
+        public String InstanceName { get; set; }
 
         public IHubProxy skynet = null;
         #endregion
@@ -44,6 +46,7 @@ namespace Rnet_Cli
         private void Initialize()
         {
             Connection = new RConnection();
+            this.InstanceName = string.Concat(this.Host, ":", this.Port);
 
             Connection.HostName = this.Host;
             Connection.Port = (ushort)this.Port;
@@ -58,11 +61,32 @@ namespace Rnet_Cli
             // The actual method call for the connection to remote server
             Connection.Connect();
 
+            #region Realtime handlers
+            skynet.On<SendIngameMessage>("IngameMessage", msg =>
+            {
+                if (msg.ServerName.Equals(this.InstanceName))
+                {
+                    if (msg.Target.Name.ToLower().Equals("all"))
+                    {
+                        Connection.Command("admin.say", msg.Message, msg.Target.Name.ToLower());
+                        msg = null;
+                    }
+                    else
+                    {
+                        Connection.Command("admin.say", msg.Message, msg.Target.Name.ToLower(), msg.Target.TargetName);
+                        msg = null;
+                    }
+                }
+            });
+            #endregion
+
             while(Connection.Client.Connected == true)
             {
-                String messageInput = Console.ReadLine();
+                // Reconnect logic should be here later on
 
-                if(String.Compare(messageInput, "exit", StringComparison.OrdinalIgnoreCase) == 0)
+                #region Shutdown app
+                String messageInput = Console.ReadLine();
+                if (String.Compare(messageInput, "exit", StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     Connection.Shutdown();
                 }
@@ -70,6 +94,7 @@ namespace Rnet_Cli
                 {
                     Connection.Command(messageInput.Wordify());
                 }
+                #endregion                
             }
         }
         #endregion
