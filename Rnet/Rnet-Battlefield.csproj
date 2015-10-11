@@ -42,7 +42,7 @@
     <Compile Include="Helpers\StringExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RnetConnection\Frostbite\Connection.cs" />
-    <Compile Include="RnetConnection\Frostbite\Message.cs" />
+    <Compile Include="RnetConnection\Frostbite\RMessage.cs" />
     <Compile Include="RnetConnection\Frostbite\Packet.cs" />
     <Compile Include="RnetConnection\Frostbite\PacketOrigin.cs" />
     <Compile Include="RnetConnection\Frostbite\PacketSerializer.cs" />

@@ -210,7 +210,6 @@ namespace Rnet_Battlefield.RnetConnection.Frostbite
 
         private void ReceiveCallback(IAsyncResult ar)
         {
-
             if (this.Client.Connected == true)
             {
                 try
