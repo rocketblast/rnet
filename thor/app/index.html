@@ -1,7 +1,9 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app>
 <head>
     <title>Skynet</title>
+    <meta charset="utf-8" />
+
     <style type="text/css">
         .container {
             background-color: #99CCFF;
@@ -23,33 +25,28 @@
             list-style: none;
         }
     </style>
+
+    <script src="/Scripts/angular.min.js"></script>
+    <!--<script src="/Scripts/angular.js" charset="utf-8"></script>-->
 </head>
 <body>
-    <div class="container">
-        <!--<input type="text" id="message" />
-        <input type="hidden" id="displayname" />-->
-        <!--<ul id="discussion"></ul>-->
+    <!--<div class="container">
         <input type="button" id="sendmessage" value="Send" />
         <div class="messages">
             <ul id="tt"></ul>
         </div>
-    </div>
+    </div>-->
 
-    <script src="/bundles/jquery"></script>
-    <script src="/bundles/signalr"></script>
-    <script src="/signalr/hubs"></script>
+    <p>testsetsetste {{ 'test' + '!' }}</p>
+
+    <script src="/bundles/jquery" charset="utf-8"></script>
+    <script src="/bundles/signalr" charset="utf-8"></script>
+    <script src="/signalr/hubs" charset="utf-8"></script>
+    <script src="/bundles/angular" charset="utf-8"></script>
+    <script src="/bundles/app" charset="utf-8"></script>
     
     <script type="text/javascript">
         $(function () {
-            //var chat = $.connection.ChatHub;
-            //chat.client.broadcastMessage = function (name, mesage) {
-            //    var encodeName = $('<div />').text(name).html();
-            //    var encodeMessage = $('<div />').text(mesage).html();
-
-            //    $('#discussion').append('<li><strong>' + encodeName
-            //        + '</strong>:&nbsp;&nbsp;' + encodeMessage + '</li>');
-            //};
-
             var addNewEvent = function (message) {
                 if($('#tt li').length > 500) {
                     $('#tt li:last').remove();
@@ -60,12 +57,14 @@
 
             var skynet = $.connection.Skynet;
             skynet.client.broadcastMessage = function (servername, message) {
+                var msg = JSON.parse(message);
+
                 var d = new Date();
                 var hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours();
                 var mins = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes();
                 var sec = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds();
                 var now = hours + ":" + mins + ":" + sec;
-                var m = now + " - " + servername + ": " + message;
+                var m = now + " - " + servername + ": " + msg.Message.Content;
                 //console.log(m);
 
                 var encodeMsg = $('<div />').text(m).html();
@@ -76,13 +75,15 @@
                 console.log("Connected!")
 
                 skynet.server.joinGroup("webclients");
-                //http://www.asp.net/signalr/overview/guide-to-the-api/hubs-api-guide-server#callfromoutsidehub
                 $('#sendmessage').click(function () {
                     var createInstance = {
                         Host: "188.126.64.7",
                         Port: 47200,
                         Password: "H4xxPass"
                     };
+
+                    console.log("Sending server");
+                    console.log(createInstance);
 
                     skynet.server.spawnInstance("nodes", createInstance);
                 });

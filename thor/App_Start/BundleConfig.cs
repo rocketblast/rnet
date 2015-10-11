@@ -13,6 +13,12 @@ namespace thor.App_Start
             bundles.Add(new ScriptBundle("~/bundles/signalr").Include(
                 "~/Scripts/jquery.signalR-{version}.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/angular").Include(
+                "~/Scripts/angular-*"));
+
+            bundles.Add(new ScriptBundle("~/bundles/app").IncludeDirectory(
+                "~/app", "*.js", true));
+
             BundleTable.EnableOptimizations = false;
         }
     }
