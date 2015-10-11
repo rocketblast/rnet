@@ -65,7 +65,8 @@
                 var mins = d.getMinutes() < 10 ? "0" + d.getMinutes() : d.getMinutes();
                 var sec = d.getSeconds() < 10 ? "0" + d.getSeconds() : d.getSeconds();
                 var now = hours + ":" + mins + ":" + sec;
-                var m = now + " - " + servername + ": " + msg.Message.Content;
+                //var m = now + " - " + servername + ": " + msg.Message.Content;
+                var m = message;
                 //console.log(m);
 
                 var encodeMsg = $('<div />').text(m).html();
