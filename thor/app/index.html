@@ -132,100 +132,100 @@
                     Password: "H4xxPass"
                 });
 
-                //servers.push({
-                //    GameType: "BF4",
-                //    Host: "188.126.64.7",
-                //    Port: 47200,
-                //    Password: "H4xxPass"
-                //});
+                servers.push({
+                    GameType: "BF4",
+                    Host: "188.126.64.7",
+                    Port: 47200,
+                    Password: "H4xxPass"
+                });
 
-                //servers.push({
-                //    GameType: "BF4",
-                //    Host: "188.126.64.7",
-                //    Port: 47215,
-                //    Password: "H4xxPass"
-                //});
+                servers.push({
+                    GameType: "BF4",
+                    Host: "188.126.64.7",
+                    Port: 47215,
+                    Password: "H4xxPass"
+                });
 
-                //servers.push({
-                //    GameType: "BF4",
-                //    Host: "188.126.64.7",
-                //    Port: 47205,
-                //    Password: "H4xxPass"
-                //});
+                servers.push({
+                    GameType: "BF4",
+                    Host: "188.126.64.7",
+                    Port: 47205,
+                    Password: "H4xxPass"
+                });
 
-                //servers.push({
-                //    GameType: "BF4",
-                //    Host: "188.126.64.14",
-                //    Port: 47025,
-                //    Password: "H4xxPass"
-                //});
+                servers.push({
+                    GameType: "BF4",
+                    Host: "188.126.64.14",
+                    Port: 47025,
+                    Password: "H4xxPass"
+                });
 
-                //servers.push({
-                //    GameType: "BF4",
-                //    Host: "188.126.64.7",
-                //    Port: 47020,
-                //    Password: "H4xxPass"
-                //});
-                //// ----------------------------------------------------
+                servers.push({
+                    GameType: "BF4",
+                    Host: "188.126.64.7",
+                    Port: 47020,
+                    Password: "H4xxPass"
+                });
+                // ----------------------------------------------------
 
-                //// BF3 servers
-                //// ----------------------------------------------------
+                // BF3 servers
+                // ----------------------------------------------------
 
-                //// Rocketblast 01
-                //servers.push({
-                //    GameType: "BF3",
-                //    Host: "188.126.64.14",
-                //    Port: 47216,
-                //    Password: "q342RasRl"
-                //});
+                // Rocketblast 01
+                servers.push({
+                    GameType: "BF3",
+                    Host: "188.126.64.14",
+                    Port: 47216,
+                    Password: "q342RasRl"
+                });
 
-                //// Rocketblast 02
-                //servers.push({
-                //    GameType: "BF3",
-                //    Host: "188.126.64.14",
-                //    Port: 47201,
-                //    Password: "q342RasRl"
-                //});
+                // Rocketblast 02
+                servers.push({
+                    GameType: "BF3",
+                    Host: "188.126.64.14",
+                    Port: 47201,
+                    Password: "q342RasRl"
+                });
 
-                //// Rocketblast 13
-                //servers.push({
-                //    GameType: "BF3",
-                //    Host: "188.126.64.14",
-                //    Port: 47212,
-                //    Password: "q342RasRl"
-                //});
+                // Rocketblast 13
+                servers.push({
+                    GameType: "BF3",
+                    Host: "188.126.64.14",
+                    Port: 47212,
+                    Password: "q342RasRl"
+                });
 
-                //// Rocketblast 14
-                //servers.push({
-                //    GameType: "BF3",
-                //    Host: "188.126.64.14",
-                //    Port: 47213,
-                //    Password: "q342RasRl"
-                //});
+                // Rocketblast 14
+                servers.push({
+                    GameType: "BF3",
+                    Host: "188.126.64.14",
+                    Port: 47213,
+                    Password: "q342RasRl"
+                });
 
-                //// Rocketblast 15
-                //servers.push({
-                //    GameType: "BF3",
-                //    Host: "188.126.64.14",
-                //    Port: 47214,
-                //    Password: "q342RasRl"
-                //});
+                // Rocketblast 15
+                servers.push({
+                    GameType: "BF3",
+                    Host: "188.126.64.14",
+                    Port: 47214,
+                    Password: "q342RasRl"
+                });
 
-                //// Rocketblast 16
-                //servers.push({
-                //    GameType: "BF3",
-                //    Host: "188.126.64.14",
-                //    Port: 47215,
-                //    Password: "q342RasRl"
-                //});
+                // Rocketblast 16
+                servers.push({
+                    GameType: "BF3",
+                    Host: "188.126.64.14",
+                    Port: 47215,
+                    Password: "q342RasRl"
+                });
 
-                //// Rocketblast 19
-                //servers.push({
-                //    GameType: "BF3",
-                //    Host: "188.126.64.14",
-                //    Port: 47218,
-                //    Password: "q342RasRl"
-                //});
+                // Rocketblast 19
+                servers.push({
+                    GameType: "BF3",
+                    Host: "188.126.64.14",
+                    Port: 47218,
+                    Password: "q342RasRl"
+                });
 
                 // ----------------------------------------------------
 
@@ -234,12 +234,14 @@
 
             var joinAllServers = function () {
                 var servers = getServers();
+                console.log(servers);
 
                 for (var i = 0; i < servers.length; i++)
                 {
                     var s = servers[i];
 
                     skynet.server.spawnInstance("nodes", s);
+                    console.log(s);
                 }
             }
 
@@ -248,7 +250,7 @@
 
                 skynet.server.joinGroup("webclients");
                 $('#sendmessage').click(function () {
-                    console.log("Sending server");
+                    console.log("Sending servers");
 
                     joinAllServers();
                 });

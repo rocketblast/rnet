@@ -40,10 +40,10 @@ namespace thor.Hubs
 
         public void InstanceCreated(CreateInstance instance)
         {
-            var list = (List<CreateInstance>)Clients.Caller.Instances;
-            list.Add(instance);
+            //var list = (List<CreateInstance>)Clients.Caller.Instances;
+            //list.Add(instance);
 
-            Clients.Caller.Instances = list;
+            //Clients.Caller.Instances = list;
         }
 
         #region Group management

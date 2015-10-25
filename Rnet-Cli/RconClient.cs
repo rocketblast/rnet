@@ -45,7 +45,7 @@ namespace Rnet_Cli
         }
 
         #region Private methods
-        private void Initialize()
+        private void Initialize(CreateInstance instance = null)
         {
             Connection = new RConnection();
             this.InstanceName = string.Concat(this.Host, ":", this.Port);
@@ -82,7 +82,22 @@ namespace Rnet_Cli
             });
             #endregion
 
-            while(Connection.Client.Connected == true)
+            #region Startup calls
+            skynet.Invoke<CreateInstance>("InstanceCreated", instance).ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    Console.WriteLine("{0} {1}", DateTime.Now, "Unable to notify thor about instance");
+                    Console.WriteLine(task.Exception.GetBaseException());
+                }
+                else
+                {
+                    Console.WriteLine("{0} {1}", DateTime.Now, "thor has been notified about instance");
+                }
+            }).Wait();
+            #endregion
+
+            while (Connection.Client.Connected == true)
             {
                 // Reconnect logic should be here later on
 
@@ -102,6 +117,16 @@ namespace Rnet_Cli
         #endregion
 
         #region Public methods
+        public void Connect(CreateInstance instance)
+        {
+            this.Host = instance.Host;
+            this.Port = instance.Port;
+            this.Password = instance.Password;
+            this.GameType = instance.GameType;
+
+            this.Initialize(instance);
+        }
+
         public void Connect(GameType type, string host, int port, string password)
         {
             this.Host = host;

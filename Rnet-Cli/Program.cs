@@ -14,14 +14,38 @@ using Rnet_Base.Handlers.Commands;
 using System.Threading;
 using Newtonsoft.Json;
 using Rnet_Base.Handlers.RealTime;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace Rnet_Cli
 {
     class Program
     {
+        const int SWP_NOZORDER = 0x4;
+        const int SWP_NOACTIVATE = 0x10;
+
+        [DllImport("kernel32")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32")]
+        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int flags);
+
         static HubConnection conn = null as HubConnection;
         static IHubProxy skynet;
         static List<Thread> Threadlist = new List<Thread>();
+
+        public static void SetWindowPosition(int x, int y, int width, int height)
+        {
+            SetWindowPos(Handle, IntPtr.Zero, x, y, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
+        }
+
+        public static IntPtr Handle
+        {
+            get
+            {
+                return GetConsoleWindow();
+            }
+        }
 
         static void Main(string[] args)
         {
@@ -37,7 +61,16 @@ namespace Rnet_Cli
             var width = GetProperty(file, "node", "width");
             Console.WindowHeight = Convert.ToInt32(height);
             Console.WindowWidth = Convert.ToInt32(width);
-            Console.SetWindowPosition(0, 0);
+            //Console.BufferHeight = Convert.ToInt32(height);
+            //Console.BufferWidth = Convert.ToInt32(width);
+            //Console.SetWindowPosition(0, 0);
+
+            //var screen = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+            //var w = screen.Width;
+            //var h = screen.Height;
+
+            //SetWindowPosition(100, h - 300, 500, 100);
+            Console.Title = "Rnet-cli";
             #endregion
 
             #region Welcome message etc
@@ -120,7 +153,8 @@ namespace Rnet_Cli
                     else
                     {
                         RconClient client = new RconClient(skynet);
-                        Thread oThread = new Thread(() => client.Connect(instance.GameType, instance.Host, instance.Port, instance.Password));
+                        //Thread oThread = new Thread(() => client.Connect(instance.GameType, instance.Host, instance.Port, instance.Password));
+                        Thread oThread = new Thread(() => client.Connect(instance));
                         oThread.Name = threadName;
 
                         Console.WriteLine("{0} {1}", DateTime.Now, "Instance has been created");
@@ -129,19 +163,6 @@ namespace Rnet_Cli
 
                         Threadlist.Add(oThread);
                         oThread.Start();
-
-                        skynet.Invoke<CreateInstance>("InstanceCreated", instance).ContinueWith(task =>
-                        {
-                            if (task.IsFaulted)
-                            {
-                                Console.WriteLine("{0} {1}", DateTime.Now, "Unable to notify thor about instance");
-                                Console.WriteLine(task.Exception.GetBaseException());
-                            }
-                            else
-                            {
-                                Console.WriteLine("{0} {1}", DateTime.Now, "thor has been notified about instance");
-                            }
-                        }).Wait();
                     }
                 });
                 #endregion
