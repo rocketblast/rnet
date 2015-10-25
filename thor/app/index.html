@@ -30,6 +30,54 @@
     <!--<script src="/Scripts/angular.js" charset="utf-8"></script>-->
 </head>
 <body>
+    <div class="mainPage">
+        <div class="header">
+            <div class="menuBar">
+                <div class="menuItems">
+                    <div class="menuItem">
+                        <a href="#" ng-bind="::'Home'"></a>
+                    </div>
+                    <div class="menuItem">
+                        <a href="#" ng-bind="::'Chat'"></a>
+                    </div>
+                    <div class="menuItem">
+                        <a href="#" ng-bind="::'Servers'"></a>
+                    </div>
+                    <div class="menuItem">
+                        <a href="#" ng-bind="::'Help'"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <!-- Chat view -->
+            <div class="page">
+                <!-- Serverlist -->
+                <div class="leftSidebar">
+                    <div class="sidebarHeader">
+                        <h2 ng-bind="::'Servers'"></h2>
+                    </div>
+                    <div class="serverList">
+                        <div class="server">
+                            <a href="#" ng-bind="'Server#1'"></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of serverlist -->
+
+                <!-- MainContent -->
+                <div class="mainContent"></div>
+                <!-- End of MainContent -->
+
+                <!-- EventList -->
+                <div class="rightSidebar"></div>
+                <!-- End of EventList -->
+            </div>
+            <!-- End of chat view -->
+        </div>
+        <div class="footer"></div>
+    </div>
+
     <div class="container">
         <input type="button" id="sendmessage" value="Send Instance" />
         <input type="button" id="sendHello" value="Send Hello" />
@@ -37,8 +85,6 @@
             <ul id="tt"></ul>
         </div>
     </div>
-
-    <p>testsetsetste {{ 'test' + '!' }}</p>
 
     <script src="/bundles/jquery" charset="utf-8"></script>
     <script src="/bundles/signalr" charset="utf-8"></script>
@@ -73,39 +119,145 @@
                 addNewEvent(encodeMsg);
             }
 
+            var getServers = function () {
+                var servers = [];
+
+                // BF4 servers
+                // ----------------------------------------------------
+                // Rocketblast 01
+                servers.push({
+                    GameType: "BF4",
+                    Host: "188.126.64.7",
+                    Port: 47210,
+                    Password: "H4xxPass"
+                });
+
+                //servers.push({
+                //    GameType: "BF4",
+                //    Host: "188.126.64.7",
+                //    Port: 47200,
+                //    Password: "H4xxPass"
+                //});
+
+                //servers.push({
+                //    GameType: "BF4",
+                //    Host: "188.126.64.7",
+                //    Port: 47215,
+                //    Password: "H4xxPass"
+                //});
+
+                //servers.push({
+                //    GameType: "BF4",
+                //    Host: "188.126.64.7",
+                //    Port: 47205,
+                //    Password: "H4xxPass"
+                //});
+
+                //servers.push({
+                //    GameType: "BF4",
+                //    Host: "188.126.64.14",
+                //    Port: 47025,
+                //    Password: "H4xxPass"
+                //});
+
+                //servers.push({
+                //    GameType: "BF4",
+                //    Host: "188.126.64.7",
+                //    Port: 47020,
+                //    Password: "H4xxPass"
+                //});
+                //// ----------------------------------------------------
+
+                //// BF3 servers
+                //// ----------------------------------------------------
+
+                //// Rocketblast 01
+                //servers.push({
+                //    GameType: "BF3",
+                //    Host: "188.126.64.14",
+                //    Port: 47216,
+                //    Password: "q342RasRl"
+                //});
+
+                //// Rocketblast 02
+                //servers.push({
+                //    GameType: "BF3",
+                //    Host: "188.126.64.14",
+                //    Port: 47201,
+                //    Password: "q342RasRl"
+                //});
+
+                //// Rocketblast 13
+                //servers.push({
+                //    GameType: "BF3",
+                //    Host: "188.126.64.14",
+                //    Port: 47212,
+                //    Password: "q342RasRl"
+                //});
+
+                //// Rocketblast 14
+                //servers.push({
+                //    GameType: "BF3",
+                //    Host: "188.126.64.14",
+                //    Port: 47213,
+                //    Password: "q342RasRl"
+                //});
+
+                //// Rocketblast 15
+                //servers.push({
+                //    GameType: "BF3",
+                //    Host: "188.126.64.14",
+                //    Port: 47214,
+                //    Password: "q342RasRl"
+                //});
+
+                //// Rocketblast 16
+                //servers.push({
+                //    GameType: "BF3",
+                //    Host: "188.126.64.14",
+                //    Port: 47215,
+                //    Password: "q342RasRl"
+                //});
+
+                //// Rocketblast 19
+                //servers.push({
+                //    GameType: "BF3",
+                //    Host: "188.126.64.14",
+                //    Port: 47218,
+                //    Password: "q342RasRl"
+                //});
+
+                // ----------------------------------------------------
+
+                return servers;
+            }
+
+            var joinAllServers = function () {
+                var servers = getServers();
+
+                for (var i = 0; i < servers.length; i++)
+                {
+                    var s = servers[i];
+
+                    skynet.server.spawnInstance("nodes", s);
+                }
+            }
+
             $.connection.hub.start().done(function () {
                 console.log("Connected!")
 
                 skynet.server.joinGroup("webclients");
                 $('#sendmessage').click(function () {
-                    var createInstance = {
-                        // Rocketblast 05
-                        //Host: "188.126.64.7",
-                        //Port: 47200,
-
-                        // Rocketblast 07
-                        //Host: "188.126.64.7",
-                        //Port: 47205,
-
-                        // Rocketblast 09
-                        Host: "188.126.64.14",
-                        Port: 47025,
-
-                        // Rocketblast 12
-                        //Host: "188.126.64.7",
-                        //Port: 47020,
-                        Password: "H4xxPass"
-                    };
-
                     console.log("Sending server");
-                    console.log(createInstance);
 
-                    skynet.server.spawnInstance("nodes", createInstance);
+                    joinAllServers();
                 });
                 
                 $('#sendHello').click(function () {
+                    var s = getInstance();
+
                     var SendIngameMessage = {
-                        ServerName: "188.126.64.7:47200",
+                        ServerName: s.Host + ":" + s.Port,
                         Target: {
                             Name: "all"
                         },

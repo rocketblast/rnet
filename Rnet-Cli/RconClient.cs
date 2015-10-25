@@ -11,7 +11,7 @@ using Rnet_Battlefield.Helpers;
 using Rnet_Battlefield.RnetConnection.Frostbite;
 using Rnet_Base.Handlers.RealTime;
 using Rnet_Base.Handlers.Commands;
-
+using Rnet_Base.Handlers.Enums;
 
 namespace Rnet_Cli
 {
@@ -22,6 +22,7 @@ namespace Rnet_Cli
         public Int32 Port { get; set; }
         public String Password { get; set; }
         public String InstanceName { get; set; }
+        public GameType GameType { get; set; }
 
         public IHubProxy skynet = null;
         #endregion
@@ -32,12 +33,13 @@ namespace Rnet_Cli
 
         public RconClient(IHubProxy proxy) { this.skynet = proxy; }
 
-        public RconClient(IHubProxy proxy, string host, int port, string password)
+        public RconClient(IHubProxy proxy, GameType type, string host, int port, string password)
         {
             this.Host = host;
             this.Port = port;
             this.Password = password;
             this.skynet = proxy;
+            this.GameType = type;
 
             Initialize();
         }
@@ -62,7 +64,7 @@ namespace Rnet_Cli
             Connection.Connect();
 
             #region Realtime handlers
-            skynet.On<SendIngameMessage>("IngameMessage", msg =>
+            var inGameMessage = skynet.On<SendIngameMessage>("IngameMessage", msg =>
             {
                 if (msg.ServerName.Equals(this.InstanceName))
                 {
@@ -100,11 +102,12 @@ namespace Rnet_Cli
         #endregion
 
         #region Public methods
-        public void Connect(string host, int port, string password)
+        public void Connect(GameType type, string host, int port, string password)
         {
             this.Host = host;
             this.Port = port;
             this.Password = password;
+            this.GameType = type;
 
             this.Initialize();
         }
@@ -130,7 +133,7 @@ namespace Rnet_Cli
 
         void Connection_PacketReceived(RConnection sender, Packet packet)
         {
-            Console.WriteLine(">> {0} {1}", packet.Tick, packet);
+            Console.WriteLine("<< {0} {1}", packet.Tick, packet);
 
             var servername = (sender.Servername != null && sender.Servername.Count() > 0) ? sender.Servername : string.Concat(sender.HostName, ":", sender.Port);
             if(!packet.Message.Contains("OK"))

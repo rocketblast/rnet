@@ -28,6 +28,24 @@ namespace thor.Hubs
             Clients.Group("nodes").IngameMessage(msg);
         }
 
+        public void SpawnInstance(string groupName, CreateInstance instance)
+        {
+            Clients.Group(groupName).createInstance(instance);
+        }
+
+        public void DestroyInstance(string groupName, CreateInstance instance)
+        {
+            Clients.Group(groupName).destroyInstance(instance);
+        }
+
+        public void InstanceCreated(CreateInstance instance)
+        {
+            var list = (List<CreateInstance>)Clients.Caller.Instances;
+            list.Add(instance);
+
+            Clients.Caller.Instances = list;
+        }
+
         #region Group management
         public void JoinGroup(string groupName)
         {
@@ -42,16 +60,12 @@ namespace thor.Hubs
         }
         #endregion
 
-        public void SpawnInstance(string groupName, CreateInstance instance)
-        {
-            Clients.Group(groupName).createInstance(instance);
-        }
-
-        #region On_Commands
+        #region Overrides On events
         public override Task OnConnected()
         {
             // On connect investigate what type of client, and then add it to list
             Clients.Caller.UserId = Context.User.Identity.Name;
+            Clients.Caller.Instances = new List<CreateInstance>();
             return base.OnConnected();
         }
 

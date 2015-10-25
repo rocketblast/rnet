@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Rnet_Base.Handlers.Enums;
 
 namespace Rnet_Base.Handlers.Commands
 {
@@ -11,6 +8,7 @@ namespace Rnet_Base.Handlers.Commands
         public String Host { get; set; }
         public Int32 Port { get; set; }
         public String Password { get; set; }
+        public GameType GameType { get; set; }
 
         public CreateInstance() { }
     }

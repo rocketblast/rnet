@@ -25,6 +25,21 @@ namespace Rnet_Cli
 
         static void Main(string[] args)
         {
+            #region Variables and properties
+            var configManger = ConfigManager.GetInstance();
+            var file = configManger.Load("config-sample.ini");
+            var baseurl = string.Empty;
+            var port = string.Empty;
+            #endregion
+
+            #region Console configuration
+            var height = GetProperty(file, "node", "height");
+            var width = GetProperty(file, "node", "width");
+            Console.WindowHeight = Convert.ToInt32(height);
+            Console.WindowWidth = Convert.ToInt32(width);
+            Console.SetWindowPosition(0, 0);
+            #endregion
+
             #region Welcome message etc
             Console.WriteLine("");
             Console.WriteLine("Rnet-cli tool v0.1 Alpha");
@@ -32,15 +47,8 @@ namespace Rnet_Cli
             Console.WriteLine("");
             #endregion
 
-            #region Variables and properties
-            var configManger = ConfigManager.GetInstance();
-            var baseurl = string.Empty;
-            var port = string.Empty;
-            #endregion
-
             #region Readconfig and setting up connection to signalr
             Console.WriteLine("Current config: ");
-            var file = configManger.Load("config-sample.ini");
 
             // Prints before continues
             PrintConfig(file);
@@ -57,60 +65,40 @@ namespace Rnet_Cli
             conn = new HubConnection(url);
 
             Console.WriteLine("");
-            Console.WriteLine("Connecting to remote signalr server...");
+            Console.WriteLine("{0} {1}", DateTime.Now, "Connecting to remote signalr server...");
             skynet = conn.CreateHubProxy("Skynet");
 
+            // Connects to signalr server and prints status
             conn.Start().ContinueWith(task =>
             {
                 if(task.IsFaulted)
                 {
-                    Console.WriteLine("There was an error opening the connection: {0}", task.Exception);
+                    Console.WriteLine("{0} {1} {2}", DateTime.Now, "There was an error opening the connection: ", task.Exception);
                 }
                 else
                 {
-                    Console.WriteLine("Connected to signalr!");
+                    Console.WriteLine("{0} {1}", DateTime.Now, "Connected to thor!");
                 }
             }).Wait();
             #endregion
 
             if (conn.State == ConnectionState.Connected)
             {
-                #region Sending node information
-                //var info = new ClientConnected()
-                //{
-                //    MaxConnections = Convert.ToInt32(GetProperty(file, "node", "maxconnections")),
-                //    Name = GetProperty(file, "node", "name"),
-                //    Type = GetProperty(file, "node", "type")
-                //};
-
-                //skynet.Invoke<ClientConnected>("ClientConnected", info).ContinueWith(task =>
-                //{
-                //    if (task.IsFaulted)
-                //    {
-                //        Console.WriteLine("There was an error calling ClientConnected: {0}", task.Exception.GetBaseException());
-                //    }
-                //    else
-                //    {
-                //        Console.WriteLine(task.Result);
-                //    }
-                //});
-                #endregion
-
                 // Try to join group nodes and waits for answer before continues
                 skynet.Invoke("JoinGroup", "nodes").ContinueWith(task =>
                 {
                     if (task.IsFaulted)
                     {
-                        Console.WriteLine("Unable to join group: nodes");
+                        Console.WriteLine("{0} {1}", DateTime.Now, "Unable to join group: nodes");
                         Console.WriteLine(task.Exception.GetBaseException());
                     }
                     else
                     {
-                        Console.WriteLine("Is now part of the group: nodes");
+                        Console.WriteLine("{0} {1}", DateTime.Now, "Is now part of the group: nodes");
                     }
                 }).Wait();
 
-                #region Handlers
+                #region General Handlers
                 var CreateInstanceHandler = skynet.On<CreateInstance>("CreateInstance", instance =>
                 {
                     Console.WriteLine("Instance information: ");
@@ -120,26 +108,40 @@ namespace Rnet_Cli
                     WriteLine(Console.WindowWidth);
 
                     Console.WriteLine("");
-                    Console.WriteLine("Trying to spawn new instance");
+                    Console.WriteLine("{0} {1}", DateTime.Now, "Trying to spawn new instance");
 
-                    RconClient client = new RconClient(skynet);
-                    Thread oThread = new Thread(() => client.Connect(instance.Host, instance.Port, instance.Password));
-                    oThread.Name = string.Concat(instance.Host, ":", instance.Port);
-
-                    if(Threadlist.FirstOrDefault(x => x.Name.Equals(oThread.Name)) != null)
+                    var threadName = string.Concat(instance.Host, ":", instance.Port);
+                    if(Threadlist.FirstOrDefault(x => x.Name.Equals(threadName)) != null)
                     {
                         // TODO: Add realtime response to this
-                        Console.WriteLine("Instance already exsists! Unable to add it");
+                        Console.WriteLine("{0} {1}", DateTime.Now, "Instance already exsists! Unable to add it");
                         WriteLine(Console.WindowWidth);
                     }
                     else
                     {
-                        Console.WriteLine("Instance has been created");
-                        Console.WriteLine("Booting up Rnet client");
+                        RconClient client = new RconClient(skynet);
+                        Thread oThread = new Thread(() => client.Connect(instance.GameType, instance.Host, instance.Port, instance.Password));
+                        oThread.Name = threadName;
+
+                        Console.WriteLine("{0} {1}", DateTime.Now, "Instance has been created");
+                        Console.WriteLine("{0} {1}", DateTime.Now, "Booting up Rnet client");
                         WriteLine(Console.WindowWidth);
 
                         Threadlist.Add(oThread);
                         oThread.Start();
+
+                        skynet.Invoke<CreateInstance>("InstanceCreated", instance).ContinueWith(task =>
+                        {
+                            if (task.IsFaulted)
+                            {
+                                Console.WriteLine("{0} {1}", DateTime.Now, "Unable to notify thor about instance");
+                                Console.WriteLine(task.Exception.GetBaseException());
+                            }
+                            else
+                            {
+                                Console.WriteLine("{0} {1}", DateTime.Now, "thor has been notified about instance");
+                            }
+                        }).Wait();
                     }
                 });
                 #endregion

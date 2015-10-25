@@ -279,9 +279,10 @@ namespace Rnet_Battlefield.RnetConnection.Frostbite
 
             // If this originated from the server then make sure we send back an OK message with
             // the same sequence id. If we don't do this then the server may disconnect us.
+            // This only occurs after some connection time
             if (packet.Origin == PacketOrigin.Server && packet.IsResponse == false)
             {
-                //this.Respond(packet, "OK");
+                this.Respond(packet, "OK");
             }
         }
     }

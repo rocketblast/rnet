@@ -19,8 +19,7 @@ namespace thor.Controllers
             return "value";
         }
 
-        // POST: api/Server
-        [HttpPost, Route(@"api/server")]
+        [HttpPost, Route(@"api/server/spawninstance")]
         public Object Post(NewServerModel value)
         {
             #region Errorhandling
