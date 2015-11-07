@@ -12,6 +12,8 @@ using Rnet_Battlefield.RnetConnection.Frostbite;
 using Rnet_Base.Handlers.RealTime;
 using Rnet_Base.Handlers.Commands;
 using Rnet_Base.Handlers.Enums;
+using System.Net.Sockets;
+using System.Threading;
 
 namespace Rnet_Cli
 {
@@ -42,6 +44,7 @@ namespace Rnet_Cli
             this.GameType = type;
 
             Initialize();
+            SetupSkynet();
         }
 
         #region Private methods
@@ -60,10 +63,24 @@ namespace Rnet_Cli
             Connection.PacketReceived += Connection_PacketReceived;
             Connection.PacketSent += Connection_PacketSent;
 
-            // The actual method call for the connection to remote server
-            Connection.Connect();
+            RunClient();
+        }
+
+        private void SetupSkynet(CreateInstance instance = null)
+        {
+            if(instance == null)
+            {
+                instance = new CreateInstance()
+                {
+                    GameType = this.GameType,
+                    Host = this.Host,
+                    Password = this.Password,
+                    Port = this.Port
+                };
+            }
 
             #region Realtime handlers
+            // The actual method call for the connection to remote server
             var inGameMessage = skynet.On<SendIngameMessage>("IngameMessage", msg =>
             {
                 if (msg.ServerName.Equals(this.InstanceName))
@@ -96,6 +113,11 @@ namespace Rnet_Cli
                 }
             }).Wait();
             #endregion
+        }
+
+        private void RunClient()
+        {
+            Connection.Connect();
 
             while (Connection.Client.Connected == true)
             {
@@ -111,8 +133,10 @@ namespace Rnet_Cli
                 {
                     Connection.Command(messageInput.Wordify());
                 }
-                #endregion                
+                #endregion
             }
+
+            //Console.WriteLine("{0} {1}", DateTime.Now, "[INFO] - Lost connection to game server");
         }
         #endregion
 
@@ -141,19 +165,24 @@ namespace Rnet_Cli
         #region Events
         void Connection_Connected(RConnection sender)
         {
-            Console.WriteLine("{0} Connected", DateTime.Now);
+            Console.WriteLine("{0} {1}", DateTime.Now, "Node is now connected to game server");
             sender.Login();
             sender.EnableEvents();
         }
 
         void Connection_Disconnected(RConnection sender)
         {
-            Console.WriteLine("{0} Disconnected!", DateTime.Now);
+            Console.WriteLine("{0} {1}", DateTime.Now, "[INFO] Node has been disconnected from game server");
+
+            ReConnect(sender, 100);
         }
 
         void Connection_Error(RConnection sender, Exception e)
         {
-            Console.WriteLine("ERROR: {0}", e.Message);
+            Console.WriteLine("{0} {1}", DateTime.Now, "[ERROR] An error occured!");
+            Console.WriteLine("Exception: {0}", e.Message);
+
+            ReConnect(sender);
         }
 
         void Connection_PacketReceived(RConnection sender, Packet packet)
@@ -198,6 +227,37 @@ namespace Rnet_Cli
             }
         }
         #endregion
+
+        private void ReConnect(RConnection sender, int tries = 5, int wait = 10000)
+        {
+            var numberOfTime = 0;
+            while (!sender.Client.Connected)
+            {
+                try
+                {
+                    Console.WriteLine("{0} {1}", DateTime.Now, "[INFO] Trying reconnect to game server");
+                    Initialize();
+                }
+                catch (SocketException s)
+                {
+                    Console.WriteLine("{0} {1}", DateTime.Now, "[WARNING] Unable to connect, will try to reconnect in 10seconds");
+                    Thread.Sleep(wait);
+
+                    if (numberOfTime == tries)
+                    {
+                        Console.WriteLine("{0} {1}", DateTime.Now, "[WARNING] Reached the maximum number of tries, will no longer try to reconnect");
+
+                        // TODO: Add more logic for sending this information to the hub and inform master
+                        break;
+                    }
+                    else
+                    {
+                        numberOfTime++;
+                        continue;
+                    }
+                }
+            }
+        }
 
         private object Serialize(object obj)
         {

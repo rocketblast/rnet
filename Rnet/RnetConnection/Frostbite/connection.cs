@@ -111,6 +111,7 @@ namespace Rnet_Battlefield.RnetConnection.Frostbite
             }
             catch (Exception e)
             {
+                connected = false;
                 this.OnError(e);
                 this.Shutdown();
             }
