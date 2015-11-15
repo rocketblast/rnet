@@ -1,10 +1,10 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" ng-app>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app="thorApp">
 <head>
     <title>Skynet</title>
     <meta charset="utf-8" />
 
-    <style type="text/css">
+    <!--<style type="text/css">
         .container {
             background-color: #99CCFF;
             border: thick solid #808080;
@@ -24,78 +24,54 @@
         #tt {
             list-style: none;
         }
-    </style>
+    </style>-->
 
-    <script src="/Scripts/angular.min.js"></script>
-    <!--<script src="/Scripts/angular.js" charset="utf-8"></script>-->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
+
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/angular-route.js"></script>
+    
+    <script src="/bundles/jquery" charset="utf-8"></script>
+    <script src="/bundles/signalr" charset="utf-8"></script>
+    <script src="/bundles/angular" charset="utf-8"></script>
+    <script src="/signalr/hubs" charset="utf-8"></script>
 </head>
-<body>
-    <div class="mainPage">
-        <div class="header">
-            <div class="menuBar">
-                <div class="menuItems">
-                    <div class="menuItem">
-                        <a href="#" ng-bind="::'Home'"></a>
-                    </div>
-                    <div class="menuItem">
-                        <a href="#" ng-bind="::'Chat'"></a>
-                    </div>
-                    <div class="menuItem">
-                        <a href="#" ng-bind="::'Servers'"></a>
-                    </div>
-                    <div class="menuItem">
-                        <a href="#" ng-bind="::'Help'"></a>
-                    </div>
+<body ng-controller="homeController">
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Angular routing example</a>
                 </div>
-            </div>
-        </div>
-        <div class="content">
-            <!-- Chat view -->
-            <div class="page">
-                <!-- Serverlist -->
-                <div class="leftSidebar">
-                    <div class="sidebarHeader">
-                        <h2 ng-bind="::'Servers'"></h2>
-                    </div>
-                    <div class="serverList">
-                        <div class="server">
-                            <a href="#" ng-bind="'Server#1'"></a>
-                        </div>
-                    </div>
-                </div>
-                <!-- End of serverlist -->
 
-                <!-- MainContent -->
-                <div class="mainContent"></div>
-                <!-- End of MainContent -->
-
-                <!-- EventList -->
-                <div class="rightSidebar"></div>
-                <!-- End of EventList -->
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
+                    <li><a href="#contact"><i class="fa fa-comment"></i> Contact</a></li>
+                </ul>
             </div>
-            <!-- End of chat view -->
-        </div>
-        <div class="footer"></div>
+        </nav>
+    </header>
+
+    <div id="main">
+        <div ng-view></div>
     </div>
 
-    <div class="container">
+    <!--<div class="container">
         <input type="button" id="sendmessage" value="Send Instance" />
         <input type="button" id="sendHello" value="Send Hello" />
         <div class="messages">
             <ul id="tt"></ul>
         </div>
-    </div>
+    </div>-->
 
-    <script src="/bundles/jquery" charset="utf-8"></script>
-    <script src="/bundles/signalr" charset="utf-8"></script>
-    <script src="/signalr/hubs" charset="utf-8"></script>
-    <script src="/bundles/angular" charset="utf-8"></script>
     <script src="/bundles/app" charset="utf-8"></script>
-    
+
     <script type="text/javascript">
         $(function () {
             var addNewEvent = function (message) {
-                if($('#tt li').length > 500) {
+                if ($('#tt li').length > 500) {
                     $('#tt li:last').remove();
                 }
 
@@ -105,6 +81,7 @@
             var skynet = $.connection.Skynet;
             skynet.client.broadcastMessage = function (servername, message) {
                 var msg = JSON.parse(message);
+                console.log(message);
 
                 var d = new Date();
                 var hours = d.getHours() < 10 ? "0" + d.getHours() : d.getHours();
@@ -245,8 +222,7 @@
                 var servers = getServers();
                 console.log(servers);
 
-                for (var i = 0; i < servers.length; i++)
-                {
+                for (var i = 0; i < servers.length; i++) {
                     var s = servers[i];
 
                     skynet.server.spawnInstance("nodes", s);
@@ -255,7 +231,7 @@
             }
 
             $.connection.hub.start().done(function () {
-                console.log("Connected!")
+                console.log("Connected!");
 
                 skynet.server.joinGroup("webclients");
                 $('#sendmessage').click(function () {
@@ -263,7 +239,7 @@
 
                     joinAllServers();
                 });
-                
+
                 $('#sendHello').click(function () {
                     var s = getInstance();
 
@@ -285,3 +261,4 @@
     </script>
 </body>
 </html>
+

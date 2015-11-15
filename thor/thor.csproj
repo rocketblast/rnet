@@ -132,10 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\app.js" />
+    <Content Include="app\assets\services\RealtimeService.js" />
     <Content Include="app\components\chat\chat-controller.js" />
     <Content Include="app\components\chat\chat.js" />
     <Content Include="app\components\home\home-controller.js" />
-    <Content Include="app\index.html" />
+    <Content Include="app\components\home\home.html" />
+    <Content Include="index.html" />
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\Publish local.pubxml" />
     <None Include="Properties\PublishProfiles\rocketblast.pubxml" />
@@ -934,6 +936,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ChatController.cs" />
+    <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -958,7 +961,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="app\assets\" />
     <Folder Include="app\shared\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
