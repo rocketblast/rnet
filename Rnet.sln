@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnet-Base", "Rnet-Base\Rnet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnet-Cli", "Rnet-Cli\Rnet-Cli.csproj", "{D3781E72-1477-4DE3-BE95-391601C4594C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rnet-announcer", "Rnet-announcer\Rnet-announcer.csproj", "{5AC8D0BA-618F-4D39-B997-1B874ACD3BBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{D3781E72-1477-4DE3-BE95-391601C4594C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3781E72-1477-4DE3-BE95-391601C4594C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3781E72-1477-4DE3-BE95-391601C4594C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AC8D0BA-618F-4D39-B997-1B874ACD3BBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AC8D0BA-618F-4D39-B997-1B874ACD3BBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AC8D0BA-618F-4D39-B997-1B874ACD3BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AC8D0BA-618F-4D39-B997-1B874ACD3BBD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +52,6 @@ Global
 		{F12CCB6E-6835-4565-8FB8-4C4674BBFFE2} = {5EBE628C-0B56-476B-B143-9C74BA33F9C5}
 		{8E1D212B-29DB-49D8-8330-B5C1DF32A858} = {D5C5FDAF-F6A2-43CC-B19B-69B7DDF297B1}
 		{D3781E72-1477-4DE3-BE95-391601C4594C} = {D5C5FDAF-F6A2-43CC-B19B-69B7DDF297B1}
+		{5AC8D0BA-618F-4D39-B997-1B874ACD3BBD} = {D5C5FDAF-F6A2-43CC-B19B-69B7DDF297B1}
 	EndGlobalSection
 EndGlobal
