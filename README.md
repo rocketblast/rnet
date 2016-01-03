@@ -1,27 +1,25 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This solution contains a number of projects which makes up the entire structure for both view events and adding new game servers.
+More information about each project will come later...
 
 ### What is this repository for? ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* Managing players on multiple game servers
+* Logging events
+* Gathering statistics
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* Change the ip in Rnet-cli config.ini to your web server host (thor)
+* Make sure the solution has set thor as start-up project with rnet-cli (both needs to be started upon debugging)
+* now visit http://localhost:PORT/app/index.html
+* Click on the button Send instance (this will send all instances listed in the web client)
+* If you want to use any other game servers then specified in (thor/index.html) then just change it
 
 ### Contribution guidelines ###
 
-* Writing tests
-* Code review
-* Other guidelines
+* There are no current guidelines
 
 ### Who do I talk to? ###
 
